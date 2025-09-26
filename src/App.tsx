@@ -2,26 +2,95 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Index from "./pages/Index";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { useState, createContext, useContext } from "react";
+
+// Pages
+import LoginPage from "./pages/LoginPage";
+import DashboardLayout from "./components/DashboardLayout";
+import Dashboard from "./pages/Dashboard";
+import JobForm from "./pages/JobForm";
+import JobList from "./pages/JobList";
+import UsersList from "./pages/UsersList";
+import Analytics from "./pages/Analytics";
 import NotFound from "./pages/NotFound";
+
+// Auth Context
+interface AuthContextType {
+  isAuthenticated: boolean;
+  login: (email: string, password: string) => boolean;
+  logout: () => void;
+}
+
+const AuthContext = createContext<AuthContextType | undefined>(undefined);
+
+export const useAuth = () => {
+  const context = useContext(AuthContext);
+  if (!context) throw new Error("useAuth must be used within AuthProvider");
+  return context;
+};
 
 const queryClient = new QueryClient();
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Index />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
-    </TooltipProvider>
-  </QueryClientProvider>
-);
+const App = () => {
+  const [isAuthenticated, setIsAuthenticated] = useState(
+    localStorage.getItem("admin_authenticated") === "true"
+  );
+
+  const login = (email: string, password: string) => {
+    // Simple authentication - in real app, validate against server
+    if (email === "admin@jobdashboard.com" && password === "admin123") {
+      setIsAuthenticated(true);
+      localStorage.setItem("admin_authenticated", "true");
+      return true;
+    }
+    return false;
+  };
+
+  const logout = () => {
+    setIsAuthenticated(false);
+    localStorage.removeItem("admin_authenticated");
+  };
+
+  return (
+    <QueryClientProvider client={queryClient}>
+      <AuthContext.Provider value={{ isAuthenticated, login, logout }}>
+        <TooltipProvider>
+          <Toaster />
+          <Sonner />
+          <BrowserRouter>
+            <Routes>
+              <Route 
+                path="/login" 
+                element={
+                  isAuthenticated ? <Navigate to="/dashboard" replace /> : <LoginPage />
+                } 
+              />
+              <Route 
+                path="/" 
+                element={
+                  isAuthenticated ? (
+                    <DashboardLayout />
+                  ) : (
+                    <Navigate to="/login" replace />
+                  )
+                }
+              >
+                <Route index element={<Navigate to="/dashboard" replace />} />
+                <Route path="dashboard" element={<Dashboard />} />
+                <Route path="jobs/new" element={<JobForm />} />
+                <Route path="jobs/edit/:id" element={<JobForm />} />
+                <Route path="jobs" element={<JobList />} />
+                <Route path="users" element={<UsersList />} />
+                <Route path="analytics" element={<Analytics />} />
+              </Route>
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </BrowserRouter>
+        </TooltipProvider>
+      </AuthContext.Provider>
+    </QueryClientProvider>
+  );
+};
 
 export default App;
