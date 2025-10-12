@@ -46,7 +46,7 @@ const LoginPage = () => {
           <div className="inline-flex items-center justify-center w-16 h-16 gradient-primary rounded-2xl mb-4 shadow-primary">
             <Briefcase className="w-8 h-8 text-white" />
           </div>
-          <h1 className="text-3xl font-bold text-foreground mb-2">Job Dashboard</h1>
+          <h1 className="text-3xl font-bold text-foreground mb-2">Spark Technologies</h1>
           <p className="text-muted-foreground">Admin Portal</p>
         </div>
 
@@ -120,7 +120,7 @@ const LoginPage = () => {
 
         {/* Footer */}
         <p className="text-center text-sm text-muted-foreground mt-6">
-          © 2024 Job Dashboard. All rights reserved.
+          © 2024 Spark Technologies. All rights reserved.
         </p>
       </div>
     </div>

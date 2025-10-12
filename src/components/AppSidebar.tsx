@@ -70,7 +70,7 @@ export function AppSidebar() {
           </div>
           {!isCollapsed && (
             <div>
-              <h2 className="font-semibold text-sidebar-foreground">Job Dashboard</h2>
+              <h2 className="font-semibold text-sidebar-foreground">Spark Technologies</h2>
               <p className="text-xs text-sidebar-foreground/70">Admin Panel</p>
             </div>
           )}
