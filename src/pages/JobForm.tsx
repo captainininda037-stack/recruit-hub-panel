@@ -8,8 +8,9 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
-import { CalendarIcon, Upload, Save, ArrowLeft, ImageIcon } from "lucide-react";
+import { CalendarIcon, Upload, Save, ArrowLeft, ImageIcon, Plus } from "lucide-react";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 
@@ -33,8 +34,7 @@ const JobForm = () => {
   });
 
   const [isLoading, setIsLoading] = useState(false);
-
-  const categories = [
+  const [categories, setCategories] = useState([
     "Govt Job",
     "Central Govt Job", 
     "SSC",
@@ -45,7 +45,9 @@ const JobForm = () => {
     "Teaching",
     "Medical",
     "Engineering"
-  ];
+  ]);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [newCategory, setNewCategory] = useState("");
 
   const handleInputChange = (field: string, value: any) => {
     setFormData(prev => ({
@@ -71,6 +73,25 @@ const JobForm = () => {
         image: file,
         imagePreview: URL.createObjectURL(file)
       }));
+    }
+  };
+
+  const handleAddCategory = () => {
+    if (newCategory.trim() && !categories.includes(newCategory.trim())) {
+      setCategories([...categories, newCategory.trim()]);
+      setFormData(prev => ({ ...prev, category: newCategory.trim() }));
+      toast({
+        title: "Category Added",
+        description: `"${newCategory.trim()}" has been added to categories.`
+      });
+      setNewCategory("");
+      setIsDialogOpen(false);
+    } else if (categories.includes(newCategory.trim())) {
+      toast({
+        variant: "destructive",
+        title: "Category Exists",
+        description: "This category already exists."
+      });
     }
   };
 
@@ -168,22 +189,65 @@ const JobForm = () => {
 
                 <div className="space-y-2">
                   <Label htmlFor="category">Category *</Label>
-                  <Select
-                    value={formData.category}
-                    onValueChange={(value) => handleInputChange("category", value)}
-                    required
-                  >
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select job category" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {categories.map((category) => (
-                        <SelectItem key={category} value={category}>
-                          {category}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+                  <div className="flex gap-2">
+                    <Select
+                      value={formData.category}
+                      onValueChange={(value) => handleInputChange("category", value)}
+                      required
+                    >
+                      <SelectTrigger className="flex-1">
+                        <SelectValue placeholder="Select job category" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {categories.map((category) => (
+                          <SelectItem key={category} value={category}>
+                            {category}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    
+                    <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+                      <DialogTrigger asChild>
+                        <Button type="button" variant="outline" size="icon">
+                          <Plus className="h-4 w-4" />
+                        </Button>
+                      </DialogTrigger>
+                      <DialogContent>
+                        <DialogHeader>
+                          <DialogTitle>Create New Category</DialogTitle>
+                          <DialogDescription>
+                            Add a custom category for job postings.
+                          </DialogDescription>
+                        </DialogHeader>
+                        <div className="space-y-4 py-4">
+                          <div className="space-y-2">
+                            <Label htmlFor="new-category">Category Name</Label>
+                            <Input
+                              id="new-category"
+                              placeholder="e.g., IT Jobs"
+                              value={newCategory}
+                              onChange={(e) => setNewCategory(e.target.value)}
+                              onKeyDown={(e) => {
+                                if (e.key === "Enter") {
+                                  e.preventDefault();
+                                  handleAddCategory();
+                                }
+                              }}
+                            />
+                          </div>
+                        </div>
+                        <DialogFooter>
+                          <Button type="button" variant="outline" onClick={() => setIsDialogOpen(false)}>
+                            Cancel
+                          </Button>
+                          <Button type="button" onClick={handleAddCategory}>
+                            Add Category
+                          </Button>
+                        </DialogFooter>
+                      </DialogContent>
+                    </Dialog>
+                  </div>
                 </div>
 
                 <div className="space-y-2">
