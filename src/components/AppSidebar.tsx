@@ -5,7 +5,10 @@ import {
   FileText, 
   Users, 
   BarChart3,
-  Briefcase
+  Briefcase,
+  MapPin,
+  Image,
+  Star
 } from "lucide-react";
 import {
   Sidebar,
@@ -35,6 +38,21 @@ const menuItems = [
     title: "Manage Jobs",
     url: "/jobs",
     icon: FileText
+  },
+  {
+    title: "Local Jobs",
+    url: "/local-jobs",
+    icon: MapPin
+  },
+  {
+    title: "Banners",
+    url: "/banners",
+    icon: Image
+  },
+  {
+    title: "Premium Posters",
+    url: "/premium-posters",
+    icon: Star
   },
   {
     title: "Users",

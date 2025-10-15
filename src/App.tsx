@@ -11,6 +11,12 @@ import DashboardLayout from "./components/DashboardLayout";
 import Dashboard from "./pages/Dashboard";
 import JobForm from "./pages/JobForm";
 import JobList from "./pages/JobList";
+import LocalJobsList from "./pages/LocalJobsList";
+import LocalJobForm from "./pages/LocalJobForm";
+import BannersList from "./pages/BannersList";
+import BannerForm from "./pages/BannerForm";
+import PremiumPostersList from "./pages/PremiumPostersList";
+import PremiumPosterForm from "./pages/PremiumPosterForm";
 import UsersList from "./pages/UsersList";
 import Analytics from "./pages/Analytics";
 import NotFound from "./pages/NotFound";
@@ -81,6 +87,15 @@ const App = () => {
                 <Route path="jobs/new" element={<JobForm />} />
                 <Route path="jobs/edit/:id" element={<JobForm />} />
                 <Route path="jobs" element={<JobList />} />
+                <Route path="local-jobs" element={<LocalJobsList />} />
+                <Route path="local-jobs/new" element={<LocalJobForm />} />
+                <Route path="local-jobs/edit/:id" element={<LocalJobForm />} />
+                <Route path="banners" element={<BannersList />} />
+                <Route path="banners/new" element={<BannerForm />} />
+                <Route path="banners/edit/:id" element={<BannerForm />} />
+                <Route path="premium-posters" element={<PremiumPostersList />} />
+                <Route path="premium-posters/new" element={<PremiumPosterForm />} />
+                <Route path="premium-posters/edit/:id" element={<PremiumPosterForm />} />
                 <Route path="users" element={<UsersList />} />
                 <Route path="analytics" element={<Analytics />} />
               </Route>
