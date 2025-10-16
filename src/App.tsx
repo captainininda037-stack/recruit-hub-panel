@@ -17,6 +17,8 @@ import BannersList from "./pages/BannersList";
 import BannerForm from "./pages/BannerForm";
 import PremiumPostersList from "./pages/PremiumPostersList";
 import PremiumPosterForm from "./pages/PremiumPosterForm";
+import CategoriesList from "./pages/CategoriesList";
+import CategoryForm from "./pages/CategoryForm";
 import UsersList from "./pages/UsersList";
 import Analytics from "./pages/Analytics";
 import NotFound from "./pages/NotFound";
@@ -96,6 +98,9 @@ const App = () => {
                 <Route path="premium-posters" element={<PremiumPostersList />} />
                 <Route path="premium-posters/new" element={<PremiumPosterForm />} />
                 <Route path="premium-posters/edit/:id" element={<PremiumPosterForm />} />
+                <Route path="categories" element={<CategoriesList />} />
+                <Route path="categories/new" element={<CategoryForm />} />
+                <Route path="categories/edit/:id" element={<CategoryForm />} />
                 <Route path="users" element={<UsersList />} />
                 <Route path="analytics" element={<Analytics />} />
               </Route>

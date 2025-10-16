@@ -8,7 +8,8 @@ import {
   Briefcase,
   MapPin,
   Image,
-  Star
+  Star,
+  FolderOpen
 } from "lucide-react";
 import {
   Sidebar,
@@ -53,6 +54,11 @@ const menuItems = [
     title: "Premium Posters",
     url: "/premium-posters",
     icon: Star
+  },
+  {
+    title: "Job Categories",
+    url: "/categories",
+    icon: FolderOpen
   },
   {
     title: "Users",
